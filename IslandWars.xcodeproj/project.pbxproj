@@ -1,0 +1,449 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		130A020AE869A58FBF20CC6C /* BattleLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF2A638EFD1F9A2DAB06FD2 /* BattleLiveActivity.swift */; };
+		2F8F2AEEFF862684D814F230 /* IslandWarsWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0FA0C9FBA014C586D6E7F502 /* IslandWarsWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		46E2DF2278155A0FFEEF4184 /* BattleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FFBDEA3F2862E156F7C3B4 /* BattleManager.swift */; };
+		53496254CF2E1C544EDC0269 /* BattleIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01441830758200AF06280CCA /* BattleIntents.swift */; };
+		64A2E1FC6D9E4ED22E7DA1E8 /* BattleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FFBDEA3F2862E156F7C3B4 /* BattleManager.swift */; };
+		69367B0395DC9F564585F928 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFF78085DBB3458604ACA0 /* Wallet.swift */; };
+		88B7CB34B4EAD50CE4FFE1EA /* HarborView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B02B339C40CB12E334A118 /* HarborView.swift */; };
+		9B2BCF373741EDD82EFDBFDE /* BattleIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01441830758200AF06280CCA /* BattleIntents.swift */; };
+		ADE0D018E8A7204352DB6735 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFF78085DBB3458604ACA0 /* Wallet.swift */; };
+		BD3DC966392FE4C17B02E8B0 /* BattleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3533EC4BFAD78612AAADC2D5 /* BattleModel.swift */; };
+		CF22479FE5C9E437B2AA5B80 /* IslandWarsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EA822B8452A434E3B920A2 /* IslandWarsApp.swift */; };
+		F6A2F4C7E74D7124D9B39605 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD19B732C26480A763BF4735 /* ShopView.swift */; };
+		F6EED065D918267B06B73D15 /* BattleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3533EC4BFAD78612AAADC2D5 /* BattleModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		544D351C278487074F2FA56A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D81E1AC832E6B27B062A46F4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A17D4D6C6721C6E31F42C4CE;
+			remoteInfo = IslandWarsWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8C1E702A245EDFA15075624C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2F8F2AEEFF862684D814F230 /* IslandWarsWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		01441830758200AF06280CCA /* BattleIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleIntents.swift; sourceTree = "<group>"; };
+		0FA0C9FBA014C586D6E7F502 /* IslandWarsWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = IslandWarsWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		24EA3B82C65ABB4B8D5FCE6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		318C8ED7EB09570740DA73ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		33EA822B8452A434E3B920A2 /* IslandWarsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslandWarsApp.swift; sourceTree = "<group>"; };
+		3533EC4BFAD78612AAADC2D5 /* BattleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleModel.swift; sourceTree = "<group>"; };
+		8CF2A638EFD1F9A2DAB06FD2 /* BattleLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleLiveActivity.swift; sourceTree = "<group>"; };
+		96B02B339C40CB12E334A118 /* HarborView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborView.swift; sourceTree = "<group>"; };
+		A6FFBDEA3F2862E156F7C3B4 /* BattleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleManager.swift; sourceTree = "<group>"; };
+		A7314417B9F1392A4F42442D /* IslandWars.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = IslandWars.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1CFF78085DBB3458604ACA0 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
+		CD19B732C26480A763BF4735 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		28C7D6A1985716A0CA5E6EF5 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				8CF2A638EFD1F9A2DAB06FD2 /* BattleLiveActivity.swift */,
+				24EA3B82C65ABB4B8D5FCE6E /* Info.plist */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		74572E15AF2751BF608A8280 = {
+			isa = PBXGroup;
+			children = (
+				A5EF156F1B4CCA30956F53DB /* App */,
+				C91E3EC6F637BF81220E61FB /* Shared */,
+				28C7D6A1985716A0CA5E6EF5 /* Widget */,
+				EA9575A01AF1C7CB5198CECE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A5EF156F1B4CCA30956F53DB /* App */ = {
+			isa = PBXGroup;
+			children = (
+				96B02B339C40CB12E334A118 /* HarborView.swift */,
+				318C8ED7EB09570740DA73ED /* Info.plist */,
+				33EA822B8452A434E3B920A2 /* IslandWarsApp.swift */,
+				CD19B732C26480A763BF4735 /* ShopView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C91E3EC6F637BF81220E61FB /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				01441830758200AF06280CCA /* BattleIntents.swift */,
+				A6FFBDEA3F2862E156F7C3B4 /* BattleManager.swift */,
+				3533EC4BFAD78612AAADC2D5 /* BattleModel.swift */,
+				B1CFF78085DBB3458604ACA0 /* Wallet.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		EA9575A01AF1C7CB5198CECE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A7314417B9F1392A4F42442D /* IslandWars.app */,
+				0FA0C9FBA014C586D6E7F502 /* IslandWarsWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A17D4D6C6721C6E31F42C4CE /* IslandWarsWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54CD595BE5F12D07E49F7A45 /* Build configuration list for PBXNativeTarget "IslandWarsWidget" */;
+			buildPhases = (
+				03F8394811B0E49F504DC623 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IslandWarsWidget;
+			packageProductDependencies = (
+			);
+			productName = IslandWarsWidget;
+			productReference = 0FA0C9FBA014C586D6E7F502 /* IslandWarsWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		CC7F50864C2E291263E35A99 /* IslandWars */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21E1D69A636FA166F057C57A /* Build configuration list for PBXNativeTarget "IslandWars" */;
+			buildPhases = (
+				13398D134CF1FF6617184DC9 /* Sources */,
+				8C1E702A245EDFA15075624C /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2EE1F7AC421C5716B5B2CC1D /* PBXTargetDependency */,
+			);
+			name = IslandWars;
+			packageProductDependencies = (
+			);
+			productName = IslandWars;
+			productReference = A7314417B9F1392A4F42442D /* IslandWars.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D81E1AC832E6B27B062A46F4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					A17D4D6C6721C6E31F42C4CE = {
+						ProvisioningStyle = Automatic;
+					};
+					CC7F50864C2E291263E35A99 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CE5829822973E9F52478ED3A /* Build configuration list for PBXProject "IslandWars" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 74572E15AF2751BF608A8280;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EA9575A01AF1C7CB5198CECE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CC7F50864C2E291263E35A99 /* IslandWars */,
+				A17D4D6C6721C6E31F42C4CE /* IslandWarsWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03F8394811B0E49F504DC623 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B2BCF373741EDD82EFDBFDE /* BattleIntents.swift in Sources */,
+				130A020AE869A58FBF20CC6C /* BattleLiveActivity.swift in Sources */,
+				64A2E1FC6D9E4ED22E7DA1E8 /* BattleManager.swift in Sources */,
+				BD3DC966392FE4C17B02E8B0 /* BattleModel.swift in Sources */,
+				ADE0D018E8A7204352DB6735 /* Wallet.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13398D134CF1FF6617184DC9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				53496254CF2E1C544EDC0269 /* BattleIntents.swift in Sources */,
+				46E2DF2278155A0FFEEF4184 /* BattleManager.swift in Sources */,
+				F6EED065D918267B06B73D15 /* BattleModel.swift in Sources */,
+				88B7CB34B4EAD50CE4FFE1EA /* HarborView.swift in Sources */,
+				CF22479FE5C9E437B2AA5B80 /* IslandWarsApp.swift in Sources */,
+				F6A2F4C7E74D7124D9B39605 /* ShopView.swift in Sources */,
+				69367B0395DC9F564585F928 /* Wallet.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2EE1F7AC421C5716B5B2CC1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A17D4D6C6721C6E31F42C4CE /* IslandWarsWidget */;
+			targetProxy = 544D351C278487074F2FA56A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1C9907A0EB4BE72F6317DB4A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Widget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alp.islandwars.widget;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		5E9C67EEE03182C86EA4D859 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		68AF45EB5EFD4D927D1B3521 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Widget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alp.islandwars.widget;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B8CEDAE13C70370F855D9271 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alp.islandwars;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D0AE42348221E4135A2088F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alp.islandwars;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DFBC04D3622619BCF546AF42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21E1D69A636FA166F057C57A /* Build configuration list for PBXNativeTarget "IslandWars" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0AE42348221E4135A2088F8 /* Debug */,
+				B8CEDAE13C70370F855D9271 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		54CD595BE5F12D07E49F7A45 /* Build configuration list for PBXNativeTarget "IslandWarsWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68AF45EB5EFD4D927D1B3521 /* Debug */,
+				1C9907A0EB4BE72F6317DB4A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CE5829822973E9F52478ED3A /* Build configuration list for PBXProject "IslandWars" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E9C67EEE03182C86EA4D859 /* Debug */,
+				DFBC04D3622619BCF546AF42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D81E1AC832E6B27B062A46F4 /* Project object */;
+}
