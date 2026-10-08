@@ -23,6 +23,14 @@ final class BattleManager: ObservableObject {
 
     private var pushedVolleyCount = 0
 
+    /// The battle is also saved to disk, so force-quitting the app or dismissing the
+    /// Live Activity can't make a losing battle disappear: it still resolves and counts.
+    private struct SavedBattle: Codable {
+        var attributes: BattleAttributes
+        var state: BattleState
+    }
+    private static let savedKey = "activeBattle"
+
     private var activity: Activity<BattleAttributes>? {
         Activity<BattleAttributes>.activities.first { $0.activityState == .active }
     }
@@ -31,10 +39,28 @@ final class BattleManager: ObservableObject {
 
     /// Picks up a battle that is still live in the Dynamic Island (e.g. after a relaunch).
     func restore() {
-        guard state == nil, let activity else { return }
-        attributes = activity.attributes
-        state = activity.content.state
-        pushedVolleyCount = activity.content.state.volleyCount
+        guard state == nil else { return }
+        if let activity {
+            attributes = activity.attributes
+            state = activity.content.state
+        } else if let data = UserDefaults.standard.data(forKey: Self.savedKey),
+                  let saved = try? JSONDecoder().decode(SavedBattle.self, from: data) {
+            attributes = saved.attributes
+            state = saved.state
+            // The Live Activity was dismissed or killed: bring the battle back to the Dynamic Island.
+            if ActivityAuthorizationInfo().areActivitiesEnabled, !saved.state.isOver {
+                _ = try? Activity.request(attributes: saved.attributes,
+                                          content: .init(state: saved.state, staleDate: saved.state.staleDate),
+                                          pushType: nil)
+            }
+        }
+        pushedVolleyCount = state?.volleyCount ?? 0
+    }
+
+    private func save() {
+        guard let attributes, let state,
+              let data = try? JSONEncoder().encode(SavedBattle(attributes: attributes, state: state)) else { return }
+        UserDefaults.standard.set(data, forKey: Self.savedKey)
     }
 
     func startRaid() {
@@ -51,6 +77,7 @@ final class BattleManager: ObservableObject {
         attributes = attrs
         state = initial
         pushedVolleyCount = 0
+        save()
         if ActivityAuthorizationInfo().areActivitiesEnabled {
             _ = try? Activity.request(attributes: attrs,
                                       content: .init(state: initial, staleDate: initial.staleDate),
@@ -93,6 +120,7 @@ final class BattleManager: ObservableObject {
     }
 
     private func push(_ s: BattleState) async {
+        save()
         pushedVolleyCount = s.volleyCount
         await activity?.update(.init(state: s, staleDate: s.staleDate))
     }
@@ -101,6 +129,7 @@ final class BattleManager: ObservableObject {
         guard let final = state, let outcome = final.outcome else { return }
         state = nil
         attributes = nil
+        UserDefaults.standard.removeObject(forKey: Self.savedKey)
 
         let wallet = Wallet.shared
         let reward = wallet.applyResult(outcome, opponentRating: final.enemy.rating, repairsUsed: final.repairsUsed)
