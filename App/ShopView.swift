@@ -1,3 +1,4 @@
+import BattleCore
 import SwiftUI
 
 struct ShopView: View {
@@ -36,18 +37,29 @@ struct ShopView: View {
                         }
                     }
                 }
-                Section("Supplies") {
+                Section {
                     HStack {
-                        Label("3 repair kits", systemImage: "wrench.and.screwdriver.fill")
+                        Label("1 repair kit", systemImage: "wrench.and.screwdriver.fill")
                         Spacer()
-                        Button("25 pearls") {
-                            if wallet.buyRepairKits(count: 3, pearlCost: 25) {
-                                Task { await battle.addRepairKits(3) }
-                            }
+                        Button("\(Wallet.kitGoldPrice) gold") {
+                            if wallet.buyRepairKitWithGold() { Task { await battle.addRepairKits(1) } }
                         }
                         .buttonStyle(.bordered)
-                        .disabled(wallet.pearls < 25)
+                        .disabled(wallet.gold < Wallet.kitGoldPrice)
                     }
+                    HStack {
+                        Label("5 repair kits", systemImage: "wrench.and.screwdriver.fill")
+                        Spacer()
+                        Button("30 pearls") {
+                            if wallet.buyRepairKits(count: 5, pearlCost: 30) { Task { await battle.addRepairKits(5) } }
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(wallet.pearls < 30)
+                    }
+                } header: {
+                    Text("Supplies")
+                } footer: {
+                    Text("Max \(Tuning.repairsPerBattle) repairs per battle, so kits never decide a ranked match.")
                 }
                 Section("Hull skins (cosmetic)") {
                     ForEach(HullSkin.allCases) { skin in
