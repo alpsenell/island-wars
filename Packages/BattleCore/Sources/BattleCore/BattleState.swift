@@ -145,10 +145,9 @@ public struct BattleState: Codable, Hashable, Sendable {
     public mutating func fire(at t: Date) {
         advance(to: t)
         guard !isOver else { return }
-        guard canFire(at: t) else {
-            lastEvent = "🔄 Cannons reloading…"
-            return
-        }
+        // Orders on cooldown are ignored without touching `lastEvent`, so the
+        // latest volley report isn't overwritten; the buttons show their own timers.
+        guard canFire(at: t) else { return }
         var damage = shotDamage(at: t)
         let exposed = isExposed(at: t)
         shotsFired += 1
@@ -165,10 +164,7 @@ public struct BattleState: Codable, Hashable, Sendable {
     public mutating func brace(at t: Date) {
         advance(to: t)
         guard !isOver else { return }
-        guard canBrace(at: t) else {
-            lastEvent = "⏳ Crew still recovering"
-            return
-        }
+        guard canBrace(at: t) else { return }
         braceUntil = t.addingTimeInterval(Tuning.braceWindow)
         braceReadyAt = t.addingTimeInterval(Tuning.braceCooldown)
         lastEvent = "🛡️ Bracing for impact…"
@@ -177,10 +173,7 @@ public struct BattleState: Codable, Hashable, Sendable {
     public mutating func repair(at t: Date) {
         advance(to: t)
         guard !isOver else { return }
-        guard repairsLeft > 0 else {
-            lastEvent = "🧰 No repairs left this battle"
-            return
-        }
+        guard repairsLeft > 0 else { return }
         repairsUsed += 1
         let amount = maxHP * Tuning.repairAmount
         myHP = min(maxHP, myHP + amount)

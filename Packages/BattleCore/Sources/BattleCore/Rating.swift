@@ -15,7 +15,7 @@ public enum League: String, CaseIterable, Comparable, Sendable {
 
     public var floor: Double {
         switch self {
-        case .bronze: 0
+        case .bronze: Rating.floor
         case .silver: 1100
         case .gold: 1300
         case .platinum: 1500
