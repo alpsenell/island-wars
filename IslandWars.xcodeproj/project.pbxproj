@@ -13,11 +13,13 @@
 		53496254CF2E1C544EDC0269 /* BattleIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01441830758200AF06280CCA /* BattleIntents.swift */; };
 		64A2E1FC6D9E4ED22E7DA1E8 /* BattleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FFBDEA3F2862E156F7C3B4 /* BattleManager.swift */; };
 		69367B0395DC9F564585F928 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFF78085DBB3458604ACA0 /* Wallet.swift */; };
+		85ED1DFAE082C1283185434F /* BattleCore in Frameworks */ = {isa = PBXBuildFile; productRef = CC668D8BF15FB36910A6DC4C /* BattleCore */; };
 		88B7CB34B4EAD50CE4FFE1EA /* HarborView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B02B339C40CB12E334A118 /* HarborView.swift */; };
 		9B2BCF373741EDD82EFDBFDE /* BattleIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01441830758200AF06280CCA /* BattleIntents.swift */; };
 		ADE0D018E8A7204352DB6735 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFF78085DBB3458604ACA0 /* Wallet.swift */; };
 		BD3DC966392FE4C17B02E8B0 /* BattleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3533EC4BFAD78612AAADC2D5 /* BattleModel.swift */; };
 		CF22479FE5C9E437B2AA5B80 /* IslandWarsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EA822B8452A434E3B920A2 /* IslandWarsApp.swift */; };
+		F2E775771D6A7B29FA996EE1 /* BattleCore in Frameworks */ = {isa = PBXBuildFile; productRef = BE1D0D176591A2F793709B6D /* BattleCore */; };
 		F6A2F4C7E74D7124D9B39605 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD19B732C26480A763BF4735 /* ShopView.swift */; };
 		F6EED065D918267B06B73D15 /* BattleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3533EC4BFAD78612AAADC2D5 /* BattleModel.swift */; };
 /* End PBXBuildFile section */
@@ -49,6 +51,7 @@
 /* Begin PBXFileReference section */
 		01441830758200AF06280CCA /* BattleIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleIntents.swift; sourceTree = "<group>"; };
 		0FA0C9FBA014C586D6E7F502 /* IslandWarsWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = IslandWarsWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C76A79FDAB7426880729AED /* BattleCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BattleCore; path = Packages/BattleCore; sourceTree = SOURCE_ROOT; };
 		24EA3B82C65ABB4B8D5FCE6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		318C8ED7EB09570740DA73ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		33EA822B8452A434E3B920A2 /* IslandWarsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslandWarsApp.swift; sourceTree = "<group>"; };
@@ -61,6 +64,25 @@
 		CD19B732C26480A763BF4735 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		4A77CB0B88016C8B5F076EF8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85ED1DFAE082C1283185434F /* BattleCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EC4CC928ECA22D7FA0E3E08 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2E775771D6A7B29FA996EE1 /* BattleCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
 		28C7D6A1985716A0CA5E6EF5 /* Widget */ = {
 			isa = PBXGroup;
@@ -71,10 +93,19 @@
 			path = Widget;
 			sourceTree = "<group>";
 		};
+		656382F3CA61C3066AE11665 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				1C76A79FDAB7426880729AED /* BattleCore */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
 		74572E15AF2751BF608A8280 = {
 			isa = PBXGroup;
 			children = (
 				A5EF156F1B4CCA30956F53DB /* App */,
+				656382F3CA61C3066AE11665 /* Packages */,
 				C91E3EC6F637BF81220E61FB /* Shared */,
 				28C7D6A1985716A0CA5E6EF5 /* Widget */,
 				EA9575A01AF1C7CB5198CECE /* Products */,
@@ -120,6 +151,7 @@
 			buildConfigurationList = 54CD595BE5F12D07E49F7A45 /* Build configuration list for PBXNativeTarget "IslandWarsWidget" */;
 			buildPhases = (
 				03F8394811B0E49F504DC623 /* Sources */,
+				8EC4CC928ECA22D7FA0E3E08 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -127,6 +159,7 @@
 			);
 			name = IslandWarsWidget;
 			packageProductDependencies = (
+				BE1D0D176591A2F793709B6D /* BattleCore */,
 			);
 			productName = IslandWarsWidget;
 			productReference = 0FA0C9FBA014C586D6E7F502 /* IslandWarsWidget.appex */;
@@ -137,6 +170,7 @@
 			buildConfigurationList = 21E1D69A636FA166F057C57A /* Build configuration list for PBXNativeTarget "IslandWars" */;
 			buildPhases = (
 				13398D134CF1FF6617184DC9 /* Sources */,
+				4A77CB0B88016C8B5F076EF8 /* Frameworks */,
 				8C1E702A245EDFA15075624C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -146,6 +180,7 @@
 			);
 			name = IslandWars;
 			packageProductDependencies = (
+				CC668D8BF15FB36910A6DC4C /* BattleCore */,
 			);
 			productName = IslandWars;
 			productReference = A7314417B9F1392A4F42442D /* IslandWars.app */;
@@ -177,6 +212,9 @@
 			);
 			mainGroup = 74572E15AF2751BF608A8280;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1E9AFA4CF4B2FA8A873EE3F6 /* XCLocalSwiftPackageReference "Packages/BattleCore" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EA9575A01AF1C7CB5198CECE /* Products */;
 			projectDirPath = "";
@@ -444,6 +482,24 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1E9AFA4CF4B2FA8A873EE3F6 /* XCLocalSwiftPackageReference "Packages/BattleCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/BattleCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BE1D0D176591A2F793709B6D /* BattleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BattleCore;
+		};
+		CC668D8BF15FB36910A6DC4C /* BattleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BattleCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D81E1AC832E6B27B062A46F4 /* Project object */;
 }

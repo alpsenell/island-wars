@@ -11,6 +11,16 @@ struct FireBroadsideIntent: LiveActivityIntent {
     }
 }
 
+struct BraceIntent: LiveActivityIntent {
+    static var title: LocalizedStringResource = "Brace for Impact"
+    init() {}
+
+    func perform() async throws -> some IntentResult {
+        await BattleManager.shared.brace()
+        return .result()
+    }
+}
+
 struct RepairHullIntent: LiveActivityIntent {
     static var title: LocalizedStringResource = "Repair Hull"
     init() {}

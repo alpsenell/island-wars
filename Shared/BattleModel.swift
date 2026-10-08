@@ -1,88 +1,21 @@
 import ActivityKit
+import BattleCore
 import Foundation
 import SwiftUI
 
-/// Tuning knobs. Battles are 5 minutes in the prototype; the real game targets hours.
-enum Tuning {
-    static let maxHP: Double = 1000
-    static let baseBattleSeconds: Double = 300
-    static var baseDPS: Double { maxHP / baseBattleSeconds }
-    static let broadsideDamage = 0.08        // fraction of max HP
-    static let broadsideCooldown: TimeInterval = 30
-    static let repairAmount = 0.15           // fraction of max HP
-}
-
+/// Live Activity payload. The whole deterministic battle state travels with it,
+/// so the Dynamic Island can render countdowns and draining hulls without updates.
 struct BattleAttributes: ActivityAttributes {
-    public struct ContentState: Codable, Hashable {
-        var maxHP: Double
-        var myHP: Double          // value at `asOf`
-        var enemyHP: Double       // value at `asOf`
-        var asOf: Date
-        var myDPS: Double         // damage per second we deal
-        var enemyDPS: Double      // damage per second we take
-        var cannonReadyAt: Date
-        var repairKits: Int
-        var lastEvent: String
-    }
+    typealias ContentState = BattleState
 
     var myFleetName: String
-    var enemyName: String
     var hullSkin: String
+    var playerRating: Int
 }
 
-enum BattleOutcome { case victory, defeat }
-
-/// Battle state is a closed-form function of time, so the Live Activity can animate
-/// hull bars with timer-driven views and needs an update only when an order is given.
-extension BattleAttributes.ContentState {
-    var mySunkAt: Date { asOf.addingTimeInterval(myHP / enemyDPS) }
-    var enemySunkAt: Date { asOf.addingTimeInterval(enemyHP / myDPS) }
-    var decidedAt: Date { min(mySunkAt, enemySunkAt) }
-
-    func myHP(at date: Date) -> Double { max(0, myHP - enemyDPS * clampedElapsed(to: date)) }
-    func enemyHP(at date: Date) -> Double { max(0, enemyHP - myDPS * clampedElapsed(to: date)) }
-
-    func outcome(at date: Date) -> BattleOutcome? {
-        guard date >= decidedAt else { return nil }
-        return enemySunkAt <= mySunkAt ? .victory : .defeat
-    }
-
-    mutating func advance(to date: Date) {
-        let newMy = myHP(at: date), newEnemy = enemyHP(at: date)
-        myHP = newMy < 0.01 ? 0 : newMy
-        enemyHP = newEnemy < 0.01 ? 0 : newEnemy
-        asOf = date
-    }
-
-    mutating func fireBroadside(at date: Date) {
-        advance(to: date)
-        guard outcome(at: date) == nil else { return }
-        guard date >= cannonReadyAt else {
-            lastEvent = "🔄 Cannons reloading…"
-            return
-        }
-        let damage = maxHP * Tuning.broadsideDamage
-        enemyHP = max(0, enemyHP - damage)
-        cannonReadyAt = date.addingTimeInterval(Tuning.broadsideCooldown)
-        lastEvent = "💥 Broadside hit! −\(Int(damage))"
-    }
-
-    mutating func repairHull(at date: Date) {
-        advance(to: date)
-        guard outcome(at: date) == nil else { return }
-        guard repairKits > 0 else {
-            lastEvent = "🧰 Out of repair kits"
-            return
-        }
-        let amount = maxHP * Tuning.repairAmount
-        repairKits -= 1
-        myHP = min(maxHP, myHP + amount)
-        lastEvent = "🔧 Hull patched +\(Int(amount))"
-    }
-
-    private func clampedElapsed(to date: Date) -> TimeInterval {
-        max(0, min(date, decidedAt).timeIntervalSince(asOf))
-    }
+extension BattleState {
+    /// Re-render the Live Activity when the next volley lands (it may have changed hull values).
+    var staleDate: Date { min(nextVolleyAt, projectedEnd()) }
 }
 
 enum HullSkin: String, CaseIterable, Identifiable {
@@ -121,6 +54,19 @@ struct HullBar: View {
         }
         .tint(tint)
         .modifier(CircularIf(circular: circular))
+    }
+}
+
+/// Broadside charge meter that fills on its own after each shot.
+struct ChargeBar: View {
+    let lastShotAt: Date
+
+    var body: some View {
+        let start = lastShotAt.addingTimeInterval(Tuning.reload)
+        let full = lastShotAt.addingTimeInterval(Tuning.fullCharge)
+        ProgressView(timerInterval: start...full, countsDown: false,
+                     label: { EmptyView() }, currentValueLabel: { EmptyView() })
+            .tint(.orange)
     }
 }
 

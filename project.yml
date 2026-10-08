@@ -2,6 +2,9 @@ name: IslandWars
 options:
   deploymentTarget:
     iOS: "17.0"
+packages:
+  BattleCore:
+    path: Packages/BattleCore
 settings:
   base:
     SWIFT_VERSION: "5.0"
@@ -27,6 +30,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.alp.islandwars
     dependencies:
       - target: IslandWarsWidget
+      - package: BattleCore
   IslandWarsWidget:
     type: app-extension
     platform: iOS
@@ -40,3 +44,5 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alp.islandwars.widget
+    dependencies:
+      - package: BattleCore
