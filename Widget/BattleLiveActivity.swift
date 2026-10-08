@@ -1,4 +1,5 @@
 import ActivityKit
+import BattleCore
 import SwiftUI
 import WidgetKit
 
@@ -22,37 +23,75 @@ struct BattleLiveActivity: Widget {
             return DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
                     FleetColumn(title: "You", hp: s.myHP, maxHP: s.maxHP, asOf: s.asOf,
-                                drain: s.enemyDPS, tint: skin, alignment: .leading)
+                                drain: s.enemy.chipDPS, tint: skin, alignment: .leading)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    FleetColumn(title: context.attributes.enemyName, hp: s.enemyHP, maxHP: s.maxHP,
-                                asOf: s.asOf, drain: s.myDPS, tint: .red, alignment: .trailing)
+                    FleetColumn(title: s.enemy.name, hp: s.enemyHP, maxHP: s.maxHP, asOf: s.asOf,
+                                drain: s.fleet.chipDPS, tint: .red, alignment: .trailing)
                 }
                 DynamicIslandExpandedRegion(.center) {
-                    Text(context.isStale ? "Battle decided" : s.lastEvent)
-                        .font(.caption)
-                        .lineLimit(1)
+                    StatusLine(state: s, isStale: context.isStale)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    if context.isStale {
-                        Text("Open Island Wars to claim your spoils").font(.caption2)
-                    } else {
-                        OrderButtons(state: s)
+                    VStack(spacing: 6) {
+                        ChargeBar(lastShotAt: s.lastShotAt)
+                        OrderButtons(state: s, compact: true)
                     }
                 }
             } compactLeading: {
-                HullBar(hp: s.myHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.enemyDPS,
+                HullBar(hp: s.myHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.enemy.chipDPS,
                         tint: skin, circular: true)
             } compactTrailing: {
-                HullBar(hp: s.enemyHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.myDPS,
-                        tint: .red, circular: true)
+                VolleyCountdown(state: s, isStale: context.isStale)
+                    .font(.caption2.monospacedDigit().bold())
+                    .frame(maxWidth: 40)
             } minimal: {
-                HullBar(hp: s.myHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.enemyDPS,
+                HullBar(hp: s.myHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.enemy.chipDPS,
                         tint: skin, circular: true)
             }
             .keylineTint(skin)
             .widgetURL(URL(string: "islandwars://battle"))
         }
+    }
+}
+
+/// Telegraph: time until the next enemy volley (the moment to Brace).
+private struct VolleyCountdown: View {
+    let state: BattleState
+    let isStale: Bool
+
+    var body: some View {
+        if isStale || state.nextVolleyAt <= .now {
+            Text("FIRE").foregroundStyle(.orange)
+        } else {
+            Text(timerInterval: Date.now...state.nextVolleyAt, countsDown: true)
+                .foregroundStyle(.red)
+                .multilineTextAlignment(.trailing)
+        }
+    }
+}
+
+/// What the player should be thinking about right now.
+private struct StatusLine: View {
+    let state: BattleState
+    let isStale: Bool
+
+    var body: some View {
+        Group {
+            if isStale || state.nextVolleyAt <= .now {
+                Text("💥 Volley landed — enemy reloading, fire now!")
+            } else {
+                HStack(spacing: 4) {
+                    Text("Volley in")
+                    Text(timerInterval: Date.now...state.nextVolleyAt, countsDown: true)
+                        .monospacedDigit().bold().foregroundStyle(.red)
+                        .frame(width: 34)
+                    Text("· \(state.lastEvent)").lineLimit(1)
+                }
+            }
+        }
+        .font(.caption2)
+        .lineLimit(1)
     }
 }
 
@@ -77,26 +116,21 @@ private struct LockScreenBattleView: View {
     var body: some View {
         let s = context.state
         let skin = HullSkin(rawValue: context.attributes.hullSkin)?.color ?? .cyan
-        VStack(alignment: .leading, spacing: 8) {
+        let league = League.from(rating: Double(context.attributes.playerRating))
+        VStack(alignment: .leading, spacing: 7) {
             HStack {
-                Text("⚓ \(context.attributes.myFleetName)").font(.subheadline.bold())
+                Text("\(league.emoji) You").font(.subheadline.bold())
                 Spacer()
-                Text("vs \(context.attributes.enemyName)").font(.subheadline.bold()).foregroundStyle(.red)
+                Text("vs \(s.enemy.name) · \(Int(s.enemy.rating))").font(.subheadline.bold()).foregroundStyle(.red)
             }
-            HullBar(hp: s.myHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.enemyDPS, tint: skin)
-            HullBar(hp: s.enemyHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.myDPS, tint: .red)
-            if context.isStale || s.decidedAt <= .now {
-                Text("Battle decided — tap to claim your spoils").font(.caption)
-            } else {
-                HStack {
-                    Text(s.lastEvent).font(.caption).lineLimit(1)
-                    Spacer()
-                    Text(timerInterval: Date.now...s.decidedAt, countsDown: true)
-                        .font(.caption.monospacedDigit())
-                        .frame(width: 50, alignment: .trailing)
-                }
-                OrderButtons(state: s)
+            HullBar(hp: s.myHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.enemy.chipDPS, tint: skin)
+            HullBar(hp: s.enemyHP, maxHP: s.maxHP, asOf: s.asOf, drainPerSecond: s.fleet.chipDPS, tint: .red)
+            HStack(spacing: 6) {
+                Text("Charge").font(.caption2)
+                ChargeBar(lastShotAt: s.lastShotAt)
             }
+            StatusLine(state: s, isStale: context.isStale)
+            OrderButtons(state: s, compact: false)
         }
         .padding()
         .foregroundStyle(.white)
@@ -104,16 +138,22 @@ private struct LockScreenBattleView: View {
 }
 
 private struct OrderButtons: View {
-    let state: BattleAttributes.ContentState
+    let state: BattleState
+    let compact: Bool
 
     var body: some View {
-        HStack {
+        HStack(spacing: 6) {
             Button(intent: FireBroadsideIntent()) {
-                Label("Broadside", systemImage: "flame.fill").frame(maxWidth: .infinity)
+                Label("Fire", systemImage: "flame.fill").frame(maxWidth: .infinity)
             }
             .tint(.orange)
+            Button(intent: BraceIntent()) {
+                Label("Brace", systemImage: "shield.fill").frame(maxWidth: .infinity)
+            }
+            .tint(.blue)
             Button(intent: RepairHullIntent()) {
-                Label("Repair (\(state.repairKits))", systemImage: "wrench.and.screwdriver.fill")
+                Label(compact ? "\(state.repairsLeft)" : "Repair (\(state.repairsLeft))",
+                      systemImage: "wrench.and.screwdriver.fill")
                     .frame(maxWidth: .infinity)
             }
             .tint(.green)
