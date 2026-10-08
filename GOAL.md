@@ -41,3 +41,37 @@ The simulator pits scripted player **policies** against rating-matched bot fleet
 ## Scoreboard
 
 _Filled in by each iteration — see the bottom of this file._
+
+### Iteration 1 — baseline (original prototype)
+Only Fire (on cooldown) and Repair (unlimited, bought with Pearls). No timing decisions, so skilled play
+≈ button-mashing (C2 ✗), and Pearls buy unlimited repairs (C4 ✗, C8 ✗). No ladder (C6 ✗).
+
+### Iteration 2–5 — current (`swift run -c release balance-report`)
+
+```
+policy        900    1000    1100    1200    1300    1400    1500    1600    1700    1800
+idle         0.0%    0.0%    0.0%    0.0%    0.0%    0.0%    0.0%    0.0%    0.0%    0.0%
+masher     100.0%  100.0%   96.2%   38.5%    1.9%    0.0%    0.0%    0.0%    0.0%    0.0%
+skilled    100.0%  100.0%   99.8%   98.7%   93.3%   70.3%   19.2%    0.0%    0.0%    0.0%
+whale      100.0%  100.0%  100.0%   82.7%   17.5%    0.6%    0.0%    0.0%    0.0%    0.0%
+
+Skilled vs Gold bot: median winner hull 13.1%, median length 266s
+Ranked ladder: idle 800 Bronze · masher 1179 Silver · whale 1243 Silver · skilled 1467 Gold
+```
+
+| # | Target | Result | |
+|---|--------|--------|---|
+| C1 | idle wins ≤ 5% | 0% | ✅ |
+| C2 | skilled − masher ≥ 30 pp | 70 pp | ✅ |
+| C3 | skilled 65–90% vs Gold | 70% | ✅ |
+| C4 | skilled ≥ whale + 15 pp | +70 pp | ✅ |
+| C5 | winner hull ≤ 45% | 13% | ✅ |
+| C6 | skilled > masher > idle league | Gold > Silver > Bronze | ✅ |
+| C7 | all orders + telegraph in Dynamic Island | Fire / Brace / Repair buttons, volley countdown in compact trailing, charge meter | ✅ builds; needs on-device check |
+| C8 | no pay-to-win | 2 repairs/battle cap, cannons capped at +12%, Pearls cosmetic/convenience | ✅ |
+
+### Known gaps (next milestone)
+- Opponents are rating-matched bots; real async PvP needs Game Center or a server.
+- The Live Activity can't redraw the instant a volley lands while the app is closed (no push server yet);
+  it goes stale at the volley and tells the player to fire, then corrects on the next order.
+- Purchases are simulated; StoreKit 2 must be wired before release.
