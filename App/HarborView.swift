@@ -1,9 +1,11 @@
+import BattleCore
 import SwiftUI
 
 struct HarborView: View {
     @EnvironmentObject private var battle: BattleManager
     @EnvironmentObject private var wallet: Wallet
     @State private var showShop = false
+    @State private var showHowTo = false
 
     var body: some View {
         NavigationStack {
@@ -13,6 +15,7 @@ struct HarborView: View {
                     if let attrs = battle.attributes, let state = battle.state {
                         BattleCard(attrs: attrs, state: state)
                     } else {
+                        RankCard()
                         RaidCard()
                     }
                     FleetCard()
@@ -27,13 +30,20 @@ struct HarborView: View {
             )
             .navigationTitle("Island Wars")
             .toolbar {
-                Button { showShop = true } label: { Label("Shop", systemImage: "cart.fill") }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showHowTo = true } label: { Label("How to play", systemImage: "questionmark.circle") }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { showShop = true } label: { Label("Shop", systemImage: "cart.fill") }
+                }
             }
             .sheet(isPresented: $showShop) { ShopView() }
+            .sheet(isPresented: $showHowTo) { HowToPlayView() }
             .alert(item: $battle.lastResult) { result in
-                Alert(title: Text(result.outcome == .victory ? "🏆 Victory!" : "☠️ Defeat"),
-                      message: Text("vs \(result.enemyName)\n+\(result.gold) gold, \(result.trophies >= 0 ? "+" : "")\(result.trophies) trophies"),
-                      dismissButton: .default(Text("Back to harbor")))
+                let sign = result.ratingChange >= 0 ? "+" : ""
+                return Alert(title: Text(result.outcome == .victory ? "🏆 Victory!" : "☠️ Defeat"),
+                             message: Text("vs \(result.enemyName)\nRating \(sign)\(result.ratingChange) → \(result.newRating)\n+\(result.gold) gold"),
+                             dismissButton: .default(Text("Back to harbor")))
             }
         }
         .task {
@@ -64,10 +74,33 @@ private struct WalletBar: View {
             Label("\(wallet.pearls)", systemImage: "circle.hexagongrid.fill").foregroundStyle(.mint)
             Spacer()
             Label("\(wallet.repairKits)", systemImage: "wrench.and.screwdriver.fill").foregroundStyle(.green)
-            Spacer()
-            Label("\(wallet.trophies)", systemImage: "trophy.fill").foregroundStyle(.orange)
         }
         .font(.headline.monospacedDigit())
+    }
+}
+
+private struct RankCard: View {
+    @EnvironmentObject private var wallet: Wallet
+    var body: some View {
+        let league = wallet.league
+        let next = League.allCases.first { $0 > league }
+        Card {
+            HStack(alignment: .firstTextBaseline) {
+                Text("\(league.emoji) \(league.rawValue)").font(.title.bold())
+                Spacer()
+                Text("\(wallet.rating)").font(.title2.monospacedDigit().bold()).foregroundStyle(.orange)
+            }
+            if let next {
+                let span = next.floor - league.floor
+                ProgressView(value: Double(wallet.rating) - league.floor, total: span).tint(.orange)
+                Text("\(Int(next.floor) - wallet.rating) to \(next.emoji) \(next.rawValue)")
+                    .font(.caption).foregroundStyle(.secondary)
+            } else {
+                Text("Top league. Defend it.").font(.caption).foregroundStyle(.secondary)
+            }
+            Text("Record \(wallet.wins)W – \(wallet.losses)L · Best \(wallet.bestRating)")
+                .font(.caption).foregroundStyle(.secondary)
+        }
     }
 }
 
@@ -75,8 +108,8 @@ private struct RaidCard: View {
     @EnvironmentObject private var battle: BattleManager
     var body: some View {
         Card {
-            Text("Set sail").font(.title2.bold())
-            Text("Start a raid. The battle continues in your Dynamic Island, so you can fire broadsides and patch your hull from any app.")
+            Text("Ranked raid").font(.title2.bold())
+            Text("You'll face a fleet near your rating. The battle runs in your Dynamic Island: brace before each volley, then fire while they reload.")
                 .font(.subheadline).foregroundStyle(.secondary)
             Button {
                 battle.startRaid()
@@ -92,52 +125,80 @@ private struct RaidCard: View {
 
 private struct BattleCard: View {
     @EnvironmentObject private var battle: BattleManager
-    @EnvironmentObject private var wallet: Wallet
     let attrs: BattleAttributes
-    let state: BattleAttributes.ContentState
+    let state: BattleState
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 0.5)) { timeline in
+        TimelineView(.periodic(from: .now, by: 0.25)) { timeline in
             let now = timeline.date
+            var s = state
+            let _ = s.advance(to: now)
             let skin = HullSkin(rawValue: attrs.hullSkin)?.color ?? .cyan
+            let untilVolley = max(0, s.nextVolleyAt.timeIntervalSince(now))
             Card {
                 HStack {
                     Text("⚓ \(attrs.myFleetName)").bold()
                     Spacer()
-                    Text("vs \(attrs.enemyName)").bold().foregroundStyle(.red)
+                    Text("vs \(s.enemy.name) · \(Int(s.enemy.rating))").bold().foregroundStyle(.red)
                 }
-                hullRow(label: "Your hull", hp: state.myHP(at: now), tint: skin)
-                hullRow(label: "Enemy hull", hp: state.enemyHP(at: now), tint: .red)
-                Text(state.lastEvent).font(.callout)
+                hullRow(label: "Your hull", hp: s.myHP, max: s.maxHP, tint: skin)
+                hullRow(label: "Enemy hull", hp: s.enemyHP, max: s.maxHP, tint: .red)
+
+                HStack {
+                    if s.isExposed(at: now) {
+                        Text("🎯 Enemy reloading — FIRE!").bold().foregroundStyle(.orange)
+                    } else {
+                        Text("Next volley in \(Int(untilVolley.rounded(.up)))s")
+                            .foregroundStyle(untilVolley <= Tuning.braceWindow ? .red : .primary)
+                            .bold(untilVolley <= Tuning.braceWindow)
+                    }
+                    Spacer()
+                    if s.isBracing(at: now) { Text("🛡️ Braced").foregroundStyle(.blue) }
+                }
+                .font(.callout.monospacedDigit())
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Broadside charge \(Int(s.charge(at: now) * 100))%").font(.caption)
+                    ProgressView(value: s.charge(at: now)).tint(.orange)
+                }
+                Text(s.lastEvent).font(.callout)
+
                 HStack {
                     Button { Task { await battle.fire() } } label: {
-                        let reload = state.cannonReadyAt.timeIntervalSince(now)
-                        Label(reload > 0 ? "Reload \(Int(reload.rounded(.up)))s" : "Broadside",
-                              systemImage: "flame.fill").frame(maxWidth: .infinity)
+                        let reload = Tuning.reload - now.timeIntervalSince(s.lastShotAt)
+                        Label(reload > 0 ? "\(Int(reload.rounded(.up)))s" : "Fire", systemImage: "flame.fill")
+                            .frame(maxWidth: .infinity)
                     }
                     .tint(.orange)
+                    Button { Task { await battle.brace() } } label: {
+                        let cooldown = s.braceReadyAt.timeIntervalSince(now)
+                        Label(cooldown > 0 ? "\(Int(cooldown.rounded(.up)))s" : "Brace", systemImage: "shield.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .tint(.blue)
                     Button { Task { await battle.repair() } } label: {
-                        Label("Repair (\(state.repairKits))", systemImage: "wrench.and.screwdriver.fill")
+                        Label("\(s.repairsLeft)", systemImage: "wrench.and.screwdriver.fill")
                             .frame(maxWidth: .infinity)
                     }
                     .tint(.green)
+                    .disabled(s.repairsLeft == 0)
                 }
                 .buttonStyle(.borderedProminent)
                 .font(.subheadline.bold())
-                Text("Tip: lock your phone or swipe home — the battle keeps going in the Dynamic Island.")
+                Text("Lock your phone or swipe home — keep fighting from the Dynamic Island.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }
     }
 
-    private func hullRow(label: String, hp: Double, tint: Color) -> some View {
+    private func hullRow(label: String, hp: Double, max: Double, tint: Color) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label).font(.caption)
                 Spacer()
-                Text("\(Int(hp.rounded())) / \(Int(state.maxHP))").font(.caption.monospacedDigit())
+                Text("\(Int(hp.rounded())) / \(Int(max))").font(.caption.monospacedDigit())
             }
-            ProgressView(value: hp, total: state.maxHP).tint(tint)
+            ProgressView(value: hp, total: max).tint(tint)
         }
     }
 }
@@ -149,14 +210,20 @@ private struct FleetCard: View {
             Text("Your fleet").font(.title3.bold())
             HStack {
                 VStack(alignment: .leading) {
-                    Text("Cannons level \(wallet.cannonLevel)")
+                    Text("Cannons level \(wallet.cannonLevel)/\(Tuning.maxCannonLevel)")
                     Text("Hull: \(wallet.hullSkin.rawValue)").foregroundStyle(wallet.hullSkin.color)
                 }
                 Spacer()
-                Button("Upgrade · \(wallet.cannonUpgradeCost)g") { _ = wallet.upgradeCannons() }
-                    .buttonStyle(.bordered)
-                    .disabled(wallet.gold < wallet.cannonUpgradeCost)
+                if wallet.cannonsMaxed {
+                    Text("Maxed").foregroundStyle(.secondary)
+                } else {
+                    Button("Upgrade · \(wallet.cannonUpgradeCost)g") { _ = wallet.upgradeCannons() }
+                        .buttonStyle(.bordered)
+                        .disabled(wallet.gold < wallet.cannonUpgradeCost)
+                }
             }
+            Text("Upgrades are small (+\(Int(Tuning.upgradeBonusPerLevel * 100))% per level) — skill wins battles.")
+                .font(.caption).foregroundStyle(.secondary)
         }
     }
 }
@@ -164,19 +231,39 @@ private struct FleetCard: View {
 private struct LeaderboardCard: View {
     @EnvironmentObject private var wallet: Wallet
     var body: some View {
-        let rows = (Rivals.leaderboard(playerTrophies: wallet.trophies) + [("You", wallet.trophies)])
-            .sorted { $0.1 > $1.1 }
+        // Prototype: rating-adjacent bot captains. Real players arrive with Game Center.
+        let rivals = EnemyProfile.names.prefix(8).enumerated().map { i, name in
+            (name, max(Int(Rating.floor), wallet.rating + 140 - i * 40))
+        }
+        let rows = (rivals + [("You", wallet.rating)]).sorted { $0.1 > $1.1 }
         Card {
-            Text("League leaderboard").font(.title3.bold())
+            Text("\(wallet.league.emoji) \(wallet.league.rawValue) leaderboard").font(.title3.bold())
             ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
                 HStack {
                     Text("\(index + 1).").monospacedDigit().frame(width: 28, alignment: .leading)
                     Text(row.0).fontWeight(row.0 == "You" ? .bold : .regular)
                     Spacer()
-                    Label("\(row.1)", systemImage: "trophy.fill").font(.caption.monospacedDigit())
+                    Text("\(row.1)").font(.callout.monospacedDigit())
                 }
                 .foregroundStyle(row.0 == "You" ? .orange : .primary)
             }
+        }
+    }
+}
+
+private struct HowToPlayView: View {
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        NavigationStack {
+            List {
+                Label("Enemy volleys are telegraphed by a countdown. Tap **Brace** in the last \(Int(Tuning.braceWindow))s to absorb \(Int(Tuning.braceReduction * 100))% of the damage.", systemImage: "shield.fill")
+                Label("Right after a volley the enemy reloads for \(Int(Tuning.exposedWindow))s. Broadsides fired then hit \(String(format: "%.1f", Tuning.exposedMultiplier))× harder and can't be braced.", systemImage: "scope")
+                Label("Broadsides charge for \(Int(Tuning.fullCharge))s. A full charge hits far harder than spamming.", systemImage: "flame.fill")
+                Label("You can use up to \(Tuning.repairsPerBattle) repair kits per battle.", systemImage: "wrench.and.screwdriver.fill")
+                Label("Win to climb: Bronze → Silver → Gold → Platinum → Legend. Opponents are matched to your rating.", systemImage: "trophy.fill")
+            }
+            .navigationTitle("How to play")
+            .toolbar { Button("Got it") { dismiss() } }
         }
     }
 }
