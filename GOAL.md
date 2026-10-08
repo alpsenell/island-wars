@@ -67,8 +67,16 @@ Ranked ladder: idle 800 Bronze · masher 1179 Silver · whale 1243 Silver · ski
 | C4 | skilled ≥ whale + 15 pp | +70 pp | ✅ |
 | C5 | winner hull ≤ 45% | 13% | ✅ |
 | C6 | skilled > masher > idle league | Gold > Silver > Bronze | ✅ |
-| C7 | all orders + telegraph in Dynamic Island | Fire / Brace / Repair buttons, volley countdown in compact trailing, charge meter | ✅ builds; needs on-device check |
+| C7 | all orders + telegraph in Dynamic Island | Fire / Brace / Repair buttons with cooldown timers, volley countdown in compact trailing, charge meter | ✅ verified in iPhone 17 Pro simulator |
 | C8 | no pay-to-win | 2 repairs/battle cap, cannons capped at +12%, Pearls cosmetic/convenience | ✅ |
+
+### Iteration 6 — simulator playtest fixes
+Playing on the iPhone 17 Pro simulator surfaced issues the simulation couldn't:
+- Tapping an order on cooldown overwrote the volley report ("Crew still recovering"), hiding what just
+  happened. Orders on cooldown are now silent no-ops; Fire/Brace buttons show live cooldown timers instead.
+- **Rage-quit dodge:** dismissing the Live Activity + force-quitting made a losing battle vanish with no
+  rating loss. Battles are now persisted and always resolve; a restored battle returns to the Dynamic Island.
+- Bronze progress bar measured from 0 instead of the 800 floor; ratings rendered with locale grouping (1.000).
 
 ### Known gaps (next milestone)
 - Opponents are rating-matched bots; real async PvP needs Game Center or a server.
