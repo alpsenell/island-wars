@@ -142,13 +142,14 @@ private struct OrderButtons: View {
     let compact: Bool
 
     var body: some View {
+        let fireReadyAt = state.lastShotAt.addingTimeInterval(Tuning.reload)
         HStack(spacing: 6) {
             Button(intent: FireBroadsideIntent()) {
-                Label("Fire", systemImage: "flame.fill").frame(maxWidth: .infinity)
+                OrderLabel(title: "Fire", icon: "flame.fill", readyAt: fireReadyAt)
             }
             .tint(.orange)
             Button(intent: BraceIntent()) {
-                Label("Brace", systemImage: "shield.fill").frame(maxWidth: .infinity)
+                OrderLabel(title: "Brace", icon: "shield.fill", readyAt: state.braceReadyAt)
             }
             .tint(.blue)
             Button(intent: RepairHullIntent()) {
@@ -157,8 +158,30 @@ private struct OrderButtons: View {
                     .frame(maxWidth: .infinity)
             }
             .tint(.green)
+            .disabled(state.repairsLeft == 0)
         }
         .buttonStyle(.borderedProminent)
         .font(.caption.bold())
+    }
+}
+
+/// Button label that shows a live cooldown timer while the order isn't ready yet.
+private struct OrderLabel: View {
+    let title: String
+    let icon: String
+    let readyAt: Date
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: icon)
+            if readyAt > .now {
+                Text(timerInterval: Date.now...readyAt, countsDown: true)
+                    .monospacedDigit()
+                    .frame(maxWidth: 36)
+            } else {
+                Text(title)
+            }
+        }
+        .frame(maxWidth: .infinity)
     }
 }
