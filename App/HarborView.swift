@@ -88,7 +88,7 @@ private struct RankCard: View {
             HStack(alignment: .firstTextBaseline) {
                 Text("\(league.emoji) \(league.rawValue)").font(.title.bold())
                 Spacer()
-                Text("\(wallet.rating)").font(.title2.monospacedDigit().bold()).foregroundStyle(.orange)
+                Text(verbatim: "\(wallet.rating)").font(.title2.monospacedDigit().bold()).foregroundStyle(.orange)
             }
             if let next {
                 let span = next.floor - league.floor
@@ -98,7 +98,7 @@ private struct RankCard: View {
             } else {
                 Text("Top league. Defend it.").font(.caption).foregroundStyle(.secondary)
             }
-            Text("Record \(wallet.wins)W – \(wallet.losses)L · Best \(wallet.bestRating)")
+            Text(verbatim: "Record \(wallet.wins)W – \(wallet.losses)L · Best \(wallet.bestRating)")
                 .font(.caption).foregroundStyle(.secondary)
         }
     }
@@ -196,7 +196,7 @@ private struct BattleCard: View {
             HStack {
                 Text(label).font(.caption)
                 Spacer()
-                Text("\(Int(hp.rounded())) / \(Int(max))").font(.caption.monospacedDigit())
+                Text(verbatim: "\(Int(hp.rounded())) / \(Int(max))").font(.caption.monospacedDigit())
             }
             ProgressView(value: hp, total: max).tint(tint)
         }
@@ -243,7 +243,7 @@ private struct LeaderboardCard: View {
                     Text("\(index + 1).").monospacedDigit().frame(width: 28, alignment: .leading)
                     Text(row.0).fontWeight(row.0 == "You" ? .bold : .regular)
                     Spacer()
-                    Text("\(row.1)").font(.callout.monospacedDigit())
+                    Text(verbatim: "\(row.1)").font(.callout.monospacedDigit())
                 }
                 .foregroundStyle(row.0 == "You" ? .orange : .primary)
             }
